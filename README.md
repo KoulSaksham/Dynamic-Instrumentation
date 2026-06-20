@@ -139,23 +139,6 @@ Instrument only a specific method by passing it as an argument:
 ./run.sh "com.calculator.service.MathService#calculate,com.calculator.engine.MultiplicationEngine#multiply"
 ```
 
----
-
-## Assignment Constraint Checklist
-
-| Requirement | How satisfied |
-|---|---|
-| HTTP server with ≥3 nested functions | `RouteHandler → MathService → [Op]Engine` |
-| Zero logging/tracing in target | `target/` has no observability imports |
-| Dynamic breakpoints | Configured via agent arg string, resolved at class-load time |
-| Local variables at breakpoint | Method parameters captured via `@Advice.AllArguments` |
-| Call stack traversal | `Thread.currentThread().getStackTrace()` + our frame tracker |
-| No target source modification | Agent attaches purely via `-javaagent` JVM flag |
-| Target continues responding | Advice never halts the thread; `thread.resume()` not needed |
-| Output to stdout + file | JSON to stdout and `instrumentation-output.json` |
-
----
-
 ## The ByteBuddy Workaround Explained
 
 **Challenge:** ByteBuddy Advice cannot read *arbitrary mid-method locals* the way
